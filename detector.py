@@ -13,7 +13,7 @@ from PIL import Image
 CLASSES = {
     0: "title",
     1: "plain_text",
-    2: "abandon",          # headers/footers/page numbers
+    2: "abandon",  # headers/footers/page numbers
     3: "figure",
     4: "figure_caption",
     5: "table",
@@ -83,7 +83,12 @@ class LayoutDetector:
                 {
                     "class": name,
                     "confidence": round(float(score), 4),
-                    "bbox_px": [round(bx1, 1), round(by1, 1), round(bx2, 1), round(by2, 1)],
+                    "bbox_px": [
+                        round(bx1, 1),
+                        round(by1, 1),
+                        round(bx2, 1),
+                        round(by2, 1),
+                    ],
                 }
             )
         return dets

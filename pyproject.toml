@@ -18,3 +18,23 @@ dependencies = [
     "pillow>=11",
     "numpy>=2",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9",
+]
+
+[tool.uv]
+# Scripts + a service module, not an installable package — uv manages the
+# dependency env but doesn't try to build/install the project itself.
+package = false
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+# Defaults (pyflakes F + pycodestyle errors E4/E7/E9) plus import sorting (I),
+# pyupgrade (UP, modernize syntax for target-version), and bugbear (B,
+# likely-bug patterns).
+extend-select = ["I", "UP", "B"]

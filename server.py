@@ -8,7 +8,6 @@ Example:
     "localhost:8000/detect?dpi=200&classes=figure,table&conf=0.3" | jq
 """
 
-import io
 import os
 
 import fitz  # PyMuPDF
@@ -63,7 +62,7 @@ async def detect(
     try:
         doc = fitz.open(stream=data, filetype="pdf")
     except Exception as e:
-        raise HTTPException(400, f"could not open PDF: {e}")
+        raise HTTPException(400, f"could not open PDF: {e}") from e
 
     scale = dpi / 72.0
     results = []
