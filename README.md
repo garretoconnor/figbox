@@ -19,6 +19,10 @@ uv run --no-project --python 3.12 \
 
 # 2. Runtime env (lean — fastapi/onnxruntime/pymupdf, no torch).
 uv sync
+
+# 3. (Optional) install the in-repo git hook — formats staged Python with ruff
+#    and runs `ruff check` on commit. Skip a run with `git commit --no-verify`.
+git config core.hooksPath hooks
 ```
 
 ## Run

@@ -1,0 +1,29 @@
+#!/bin/sh
+# Pre-commit: format staged Python with ruff and re-stage it, then lint the repo.
+# A failing `ruff check` blocks the commit. Skip with `git commit --no-verify`.
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+# Resolve ruff: prefer the project's locked ruff in the uv venv so the hook and
+# `uv run ruff` agree on version; fall back to a global ruff; skip if neither
+# exists (e.g. before `uv sync`) so a missing tool can't block a commit.
+if [ -x .venv/bin/ruff ]; then
+  RUFF=.venv/bin/ruff
+elif command -v ruff >/dev/null 2>&1; then
+  RUFF=ruff
+else
+  echo "pre-commit: ruff not found (.venv/bin/ruff or PATH); skipping. Run 'uv sync'." >&2
+  exit 0
+fi
+
+# Format the staged Python files and re-stage them (mechanical, like a sort).
+# Only staged files are touched. Caveat: if a file is partially staged, re-adding
+# stages its unstaged hunks too — uncommon, and `--no-verify` is the escape hatch.
+staged_py=$(git diff --cached --name-only --diff-filter=ACM -- '*.py')
+if [ -n "$staged_py" ]; then
+  printf '%s\n' "$staged_py" | xargs "$RUFF" format -- >/dev/null
+  printf '%s\n' "$staged_py" | xargs git add --
+fi
+
+# Lint the repo; a remaining (non-auto-fixable) error blocks the commit.
+"$RUFF" check .
