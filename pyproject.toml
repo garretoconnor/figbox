@@ -1,0 +1,20 @@
+[project]
+name = "figure-extraction"
+version = "0.1.0"
+description = "figbox — figure/table bounding-box extraction for scientific PDFs (DocLayout-YOLO via ONNX Runtime)"
+readme = "README.md"
+requires-python = ">=3.12"
+# Runtime deps only — lean, no torch. The one-time model export (export_model.py)
+# needs torch + doclayout-yolo and is run in a throwaway env, NOT installed here:
+#   uv run --no-project --python 3.12 \
+#     --with doclayout-yolo --with huggingface_hub --with onnx --with onnxslim \
+#     python export_model.py
+dependencies = [
+    "fastapi>=0.115",
+    "python-multipart>=0.0.9",  # required for UploadFile / multipart form parsing
+    "uvicorn[standard]>=0.30",
+    "onnxruntime>=1.20",
+    "pymupdf>=1.24",
+    "pillow>=11",
+    "numpy>=2",
+]

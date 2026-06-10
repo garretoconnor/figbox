@@ -1,0 +1,12 @@
+# Exported model weights (~80MB) — regenerate with export_model.py
+model.onnx
+
+# uv / venv
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
